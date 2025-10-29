@@ -42,6 +42,37 @@ O sistema é composto por **microserviços containerizados** que se comunicam en
 
 ---
 
+**Justificativa da Arquitetura Proposta**
+
+**1. Modularidade e Separação de Responsabilidades**
+
+Cada componente do sistema tem uma função clara e isolada:
+O API Gateway cuida apenas da interface com o usuário e roteamento de requisições.
+O DraftAgent e o ReviewAgent tratam de partes distintas do processamento do texto (geração e revisão).
+O Message Broker coordena a comunicação assíncrona entre os agentes.
+O Banco de Dados centraliza o armazenamento e histórico.
+Essa separação facilita a manutenção, testes e evolução independente de cada serviço, sem impactar o restante do sistema.
+
+**2. Escalabilidade e Desempenho**
+Ao adotar microserviços containerizados:
+Cada agente pode ser escalado horizontalmente conforme a demanda.
+Exemplo: se a geração de rascunhos for mais custosa, é possível subir múltiplas instâncias do DraftAgent sem alterar o resto do sistema.
+A comunicação via Message Broker permite processamento assíncrono, evitando gargalos e possibilitando alta vazão (throughput).
+Isso garante melhor uso de recursos, resiliência e capacidade de atender múltiplas requisições simultâneas.
+
+**3. Desacoplamento entre Serviços**
+A utilização de um Message Broker (MCP/A2A) como camada intermediária de comunicação:
+Desacopla a lógica entre produtores e consumidores de mensagens.
+Evita dependência direta entre microserviços.
+Permite tolerância a falhas — se um agente estiver temporariamente indisponível, as mensagens permanecem na fila até que ele volte a operar.                       Isso aumenta a resiliência e reduz o risco de interrupção completa do sistema.
+
+**4. Manutenibilidade e Evolução Tecnológica**
+
+Como os serviços são independentes:
+É possível atualizar o modelo do ReviewAgent (ex.: trocar por uma versão mais recente do modelo de NLP) sem alterar o restante.
+O sistema pode evoluir gradualmente sem reescrever a arquitetura completa.
+Isso reduz o custo de evolução e aumenta a longevidade do projeto.
+
 ## ⚙️ Tecnologias Utilizadas
 
 --
