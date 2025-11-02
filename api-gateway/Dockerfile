@@ -1,9 +1,9 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY package*json ./
+COPY ./api-gateway/package*json ./
 RUN npm install
-COPY . .
+COPY ./api-gateway/. ./
 RUN mkdir -p /db-padroes
-COPY ../db-padroes/regras.json /db-padroes/regras.json
+COPY ./db-padroes/regras.json /db-padroes/regras.json
 EXPOSE 3000
 CMD ["node", "index.js"]
