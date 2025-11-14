@@ -11,8 +11,8 @@ const PORT = 3000;
 
 app.use(express.json());
 
-const AGENTE_GERADOR_URL = process.env.AGENTE_GERADOR_URL || 'htpp://localhost:8001';
-const AGENTE_REVISOR_URL = process.env.AGENTE_REVISOR_URL || 'htpp://localhost:8002'
+const AGENTE_GERADOR_URL = process.env.AGENTE_GERADOR_URL || 'http://localhost:8001';
+const AGENTE_REVISOR_URL = process.env.AGENTE_REVISOR_URL || 'http://localhost:8002';
 const PADROES_FILE_PATH = path.join(__dirname, '..', 'db-padroes', 'regras.json');
 
 
@@ -62,7 +62,7 @@ app.get('/api/status', (req, res) => {
 });
 
 //Acesso aos Dados ( Health Check do arquivo dos Padrões )
-app.get('api/padroes', async (req, res) => {
+app.get('/api/padroes', async (req, res) => {
     try {
         const padroes = await getPadroes(PADROES_FILE_PATH);
         res.json({ padroes });
