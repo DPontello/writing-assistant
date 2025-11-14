@@ -4,8 +4,6 @@ services:
   ollama:
     image: ollama/ollama
     container_name: ollama_service
-    entrypoint: /bin/sh
-    command: -c "ollama serve & ollama pull phi3 && wait"
     ports:
       - "11434:11434"
     volumes:
