@@ -3,9 +3,11 @@ const express = require('express');
 const axios = require('axios');
 const fs = require('fs/promises');
 const path = require('path');
-const app = express();
+const cors = require('cors');
 const PORT = 3000;
-
+const app = express();
+app.use(express.json());
+app.use(cors());
 
 // Variáveis de ambiente e Config Básica
 
