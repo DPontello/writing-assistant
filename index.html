@@ -1,190 +1,230 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCRIPTUM - Assistente de Redação</title>
-    <style>
-        /* CSS para deixar apresentável */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS - Assistente Multiagente</title>
 
-        main {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 600px;
-            padding: 2rem;
-        }
+<!-- Carrega o Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-        h1 {
-            text-align: center;
-            color: #1c1e21;
-            margin-top: 0;
-        }
+<!-- Carrega a fonte Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
-        label {
-            font-weight: 600;
-            color: #4b4f56;
-            display: block;
-            margin-bottom: 8px;
-        }
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    #resultado-texto {
+        font-family: 'Lora', serif;
+    }
+    
+    #mcp-trace::-webkit-scrollbar {
+        width: 8px;
+    }
+    #mcp-trace::-webkit-scrollbar-track {
+        background: #111827;
+    }
+    #mcp-trace::-webkit-scrollbar-thumb {
+        background: #4b5563;
+        border-radius: 4px;
+    }
+    #mcp-trace::-webkit-scrollbar-thumb:hover {
+        background: #6b7280;
+    }
+</style>
 
-        textarea {
-            width: 100%;
-            min-height: 100px;
-            padding: 10px;
-            border: 1px solid #dddfe2;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-family: inherit;
-            box-sizing: border-box; 
-            resize: vertical;
-        }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 16px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #ffffff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        button:hover {
-            background-color: #0069d9;
-        }
-
-        button:disabled {
-            background-color: #a0cfff;
-            cursor: not-allowed;
-        }
-
-        #resultado-container {
-            margin-top: 24px;
-        }
-
-        #resultado-texto {
-            background-color: #f7f7f7;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            padding: 16px;
-            min-height: 150px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: "Courier New", Courier, monospace;
-            color: #333;
-        }
-
-        #status-msg {
-            text-align: center;
-            font-style: italic;
-            color: #606770;
-        }
-    </style>
 </head>
-<body>
 
-    <main>
-        <h1>🤖 SCRIPTUM</h1>
-        <p>Assistente de Redação Institucional Distribuído</p>
+<body class="bg-gray-900 text-gray-200">
 
-        <div>
-            <label for="topicos-input">Tópicos (um por linha):</label>
-            <textarea id="topicos-input" rows="5" placeholder="Ex: Agradecer ao cliente pela parceria&#10;Ex: Agendar reunião de alinhamento&#10;Ex: Solicitar envio do contrato"></textarea>
+<!-- Container principal -->
+<div class="flex items-center justify-center min-h-screen p-4">
+    
+    <!-- Cartão Glassmorphism -->
+    <main class="w-full max-w-3xl p-6 md:p-10 bg-gray-800 bg-opacity-70 backdrop-blur-lg border border-gray-700 rounded-xl shadow-2xl transition-all duration-300">
+        
+        <!-- Cabeçalho -->
+        <div class="flex items-center justify-center mb-6">
+            <svg class="w-10 h-10 text-blue-400 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M8.25 21v-1.5m1.125-13.875c1.451-1.294 3.057-2.122 4.875-2.122s3.424.828 4.875 2.122m-9.75 0c1.451 1.294 3.057 2.122 4.875 2.122s3.424-.828 4.875-2.122m-9.75 0a3.11 3.11 0 00-4.875 2.122M7.5 12a4.5 4.5 0 011.536-3.375m0 0c1.451-1.294 3.057-2.122 4.875-2.122s3.424.828 4.875 2.122m-9.75 0a3.11 3.11 0 00-4.875 2.122M7.5 12a4.5 4.5 0 011.536-3.375m0 0c1.451 1.294 3.057 2.122 4.875 2.122s3.424.828 4.875 2.122m-9.75 0a3.11 3.11 0 00-4.875 2.122M19.5 8.25h-1.5m-15 0H3m16.5 0a3.11 3.11 0 01-4.875 2.122m0 0a4.5 4.5 0 01-1.536 3.375m0 0a4.5 4.5 0 01-1.536 3.375m0 0a3.11 3.11 0 01-4.875 2.122m0 0c-1.451 1.294-3.057 2.122-4.875 2.122s-3.424-.828-4.875-2.122m9.75 0a4.5 4.5 0 011.536-3.375" />
+            </svg>
+            <h1 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">NEXUS</h1>
         </div>
 
-        <button id="gerar-btn">Gerar Rascunho</button>
+        <p class="text-center text-gray-400 text-md mb-8">Assistente de Redação Multiagente</p>
 
-        <div id="resultado-container">
-            <label for="resultado-texto">Resultado:</label>
-            <div id="status-msg">Aguardando geração...</div>
-            <pre id="resultado-texto"></pre>
+        <!-- Área de Tópicos -->
+        <div class="mb-6">
+            <label for="topicos-input" class="block text-sm font-medium text-gray-300 mb-2">
+                Seus tópicos (um por linha):
+            </label>
+            <textarea
+                id="topicos-input"
+                rows="5"
+                class="w-full p-4 bg-gray-900 border border-gray-700 rounded-lg text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                placeholder="Ex: Agradecer ao cliente pela parceria&#10;Ex: Agendar reunião de alinhamento&#10;Ex: Solicitar envio do contrato"
+            ></textarea>
         </div>
+
+        <!-- Botão -->
+        <button id="gerar-btn"
+            class="w-full flex items-center justify-center p-3 font-semibold text-lg text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed">
+
+            <svg id="loading-spinner"
+                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
+
+            <span id="button-text">Processar Rascunho</span>
+        </button>
+
+        <!-- Container de Resultados -->
+        <div id="resultado-container" class="mt-8 opacity-0 transition-opacity duration-500">
+
+            <div id="status-msg" class="text-center text-lg font-medium mb-4"></div>
+
+            <div id="output-wrapper" class="hidden">
+
+                <label for="resultado-texto" class="block text-sm font-medium text-gray-300 mb-2">
+                    Rascunho Revisado:
+                </label>
+
+                <div class="bg-white text-gray-900 rounded-lg p-6 shadow-inner mb-6">
+                    <pre id="resultado-texto" class="text-base whitespace-pre-wrap break-words"></pre>
+                </div>
+
+                <!-- MCP -->
+                <details class="bg-gray-900 bg-opacity-50 border border-gray-700 rounded-lg overflow-hidden">
+                    <summary class="p-4 cursor-pointer font-medium text-gray-300 hover:bg-gray-700 transition-colors">
+                        Ver Rastreio MCP (Debug)
+                    </summary>
+                    <div class="p-4 border-t border-gray-700">
+                        <pre id="mcp-trace"
+                            class="bg-gray-950 text-green-400 font-mono text-sm p-4 rounded-md overflow-x-auto max-h-64">
+                        </pre>
+                    </div>
+                </details>
+
+            </div>
+        </div>
+
     </main>
+</div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            
-            const gerarBtn = document.getElementById("gerar-btn");
-            const topicosInput = document.getElementById("topicos-input");
-            const resultadoTexto = document.getElementById("resultado-texto");
-            const statusMsg = document.getElementById("status-msg");
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        const gerarBtn = document.getElementById("gerar-btn");
+        const topicosInput = document.getElementById("topicos-input");
+        const resultadoContainer = document.getElementById("resultado-container");
+        const resultadoTexto = document.getElementById("resultado-texto");
+        const statusMsg = document.getElementById("status-msg");
+        const mcpTrace = document.getElementById("mcp-trace");
+        const outputWrapper = document.getElementById("output-wrapper");
 
-            const apiUrl = "http://localhost:3000/api/gerar-rascunho";
+        const buttonText = document.getElementById("button-text");
+        const loadingSpinner = document.getElementById("loading-spinner");
 
-            gerarBtn.addEventListener("click", async () => {
-                
-                const topicosTexto = topicosInput.value;
+        const apiUrl = "http://localhost:3000/api/gerar-rascunho";
 
-                if (!topicosTexto.trim()) {
-                    alert("Por favor, insira pelo menos um tópico.");
-                    return;
-                }
-
-                // 1. Converte o texto (um por linha) em uma lista (array)
-                const topicosArray = topicosTexto.split('\n')
-                                                .filter(topico => topico.trim() !== ''); // Remove linhas vazias
-
-                if (topicosArray.length === 0) {
-                    alert("Por favor, insira tópicos válidos.");
-                    return;
-                }
-
-                // 2. Atualiza a interface para "Modo Carregando"
+        const setCarregando = (carregando) => {
+            if (carregando) {
                 gerarBtn.disabled = true;
-                gerarBtn.textContent = "Gerando...";
+                buttonText.textContent = "Processando...";
+                loadingSpinner.classList.remove("hidden");
+
+                resultadoContainer.classList.add("opacity-100");
+                outputWrapper.classList.add("hidden");
+
                 statusMsg.textContent = "Conectando ao Gateway e Agentes... (pode demorar na 1ª vez)";
-                resultadoTexto.textContent = "";
+                statusMsg.className = "text-center text-lg font-medium mb-4 text-yellow-400";
 
-                try {
-                    // 3. Tenta chamar API 
-                    const response = await fetch(apiUrl, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ topicos: topicosArray })
-                    });
+            } else {
+                gerarBtn.disabled = false;
+                buttonText.textContent = "Processar Rascunho";
+                loadingSpinner.classList.add("hidden");
+            }
+        };
 
-                    // 4. Verifica se a resposta foi um erro
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP! Status: ${response.status}`);
-                    }
+        const mostrarErro = (mensagem) => {
+            statusMsg.textContent = mensagem;
+            statusMsg.className = "text-center text-lg font-medium mb-4 text-red-400";
+            resultadoContainer.classList.add("opacity-100");
+            outputWrapper.classList.add("hidden");
+            mcpTrace.closest("details").open = false;
+        };
 
-                    // 5. Se deu certo, pega o JSON da resposta
-                    const data = await response.json();
+        const mostrarSucesso = (rascunho, mcp) => {
+            statusMsg.textContent = "Rascunho gerado e revisado com sucesso!";
+            statusMsg.className = "text-center text-lg font-medium mb-4 text-green-400";
+            
+            resultadoTexto.textContent = rascunho;
+            mcpTrace.textContent = JSON.stringify(mcp, null, 2);
 
-                    // 6. Mostra o resultado final!
-                    resultadoTexto.textContent = data.rascunho_final_revisado || data.rascunho_final; // Pega o rascunho
-                    statusMsg.textContent = "Rascunho gerado e revisado com sucesso!";
+            resultadoContainer.classList.add("opacity-100");
+            outputWrapper.classList.remove("hidden");
+            mcpTrace.closest("details").open = false;
+        };
 
-                } catch (error) {
-                    console.error("Erro ao chamar API:", error);
-                    statusMsg.textContent = "Erro de conexão!";
-                    resultadoTexto.textContent = `Falha ao conectar no Gateway (http://localhost:3000). Verifique se os containers estão rodando e veja o console (F12) para mais detalhes.`;
-                } finally {
-                    gerarBtn.disabled = false;
-                    gerarBtn.textContent = "Gerar Rascunho";
+        gerarBtn.addEventListener("click", async () => {
+
+            const topicosTexto = topicosInput.value;
+
+            if (!topicosTexto.trim()) {
+                mostrarErro("Por favor, insira pelo menos um tópico.");
+                return;
+            }
+
+            const topicosArray = topicosTexto
+                .split('\n')
+                .filter(t => t.trim() !== '');
+
+            if (topicosArray.length === 0) {
+                mostrarErro("Por favor, insira tópicos válidos.");
+                return;
+            }
+
+            setCarregando(true);
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ topicos: topicosArray })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const errorMsg = data.detail || data.error || `Erro HTTP! Status: ${response.status}`;
+                    throw new Error(errorMsg);
                 }
-            });
+
+                mostrarSucesso(data.rascunho_final_revisado, data.mcp_trace);
+
+            } catch (error) {
+                console.error("Erro ao chamar API:", error);
+                mostrarErro(`Falha na conexão: ${error.message}. Verifique se os containers estão rodando.`);
+            } finally {
+                gerarBtn.disabled = false;
+                buttonText.textContent = "Processar Rascunho";
+                loadingSpinner.classList.add("hidden");
+            }
         });
-    </script>
+    });
+</script>
+
 
 </body>
 </html>
