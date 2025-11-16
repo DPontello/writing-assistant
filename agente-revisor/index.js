@@ -34,8 +34,8 @@ app.get('/api/status', (req, res) => {
 
 //Rota para revisar o rascunho
 app.post('/revisar', async (req, res) => {
-    // 1. Recebe os dados do Gateway (Rascunho + Padrões)
-    const { rascunho, padroes } = req.body;
+    // 1. Recebe os dados do Gateway (Rascunho + Padrões + Contexto MCP anterior)
+    const { rascunho, padroes, mcp_agente_1 } = req.body; // <-- MODIFICAÇÃO: mcp_agente_1 adicionado
 
     if (!rascunho || !padroes) {
         return res.status(400).json({ error: 'Rascunho ou Padrões de revisão estão faltando.' });
@@ -73,7 +73,21 @@ app.post('/revisar', async (req, res) => {
         
         console.log("Agente 2: Gemini respondeu com sucesso.");
         
-        res.json({ rascunho_revisado: textoRevisado });
+        // --- INÍCIO DA MODIFICAÇÃO MCP ---
+        
+        // 1. Criar o objeto de contexto MCP para este agente
+        const mcp_context = {
+            "task": "Revisão de Rascunho com Padrões",
+            "model": "gemini-2.5-flash",
+            "prompt": prompt,
+            "input": rascunho,
+            "output": textoRevisado,
+            "previous_step": mcp_agente_1 || null 
+        };
+        
+        // 2. MODIFICAÇÃO: Retornar o rascunho revisado E o novo contexto
+        res.json({ rascunho_revisado: textoRevisado, mcp: mcp_context });
+        // --- FIM DA MODIFICAÇÃO MCP ---
 
     } catch (error) {
         // Agora, se tiver um erro 404, será de fato um problema de API (como a API desabilitada no Cloud)
@@ -84,7 +98,6 @@ app.post('/revisar', async (req, res) => {
         });
     }
 });
-
 //Ligar o servidor
 app.listen(PORT, () => {
     console.log(`Agente Revisor rodando na porta ${PORT}`);
