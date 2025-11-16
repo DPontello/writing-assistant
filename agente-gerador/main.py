@@ -1,4 +1,3 @@
-#Importações 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import ollama
@@ -57,16 +56,12 @@ async def generate_rascunho(entrada: TopicosInput):
         print("Agente 1: Ollama respondeu com sucesso.")
         
         # --- INÍCIO DA MODIFICAÇÃO MCP ---
-        
-        # 1. Criar o objeto de contexto MCP
         mcp_context = {
             "task": "Geração de Rascunho Inicial",
             "model": "phi3",
             "prompt": prompt,
             "output": rascunho_gerado
         }
-        
-        # 2. Retornar o rascunho E o contexto
         return {"rascunho": rascunho_gerado, "mcp": mcp_context}
         # --- FIM DA MODIFICAÇÃO MCP ---
 

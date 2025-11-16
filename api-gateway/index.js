@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Variáveis de ambiente e Config Básica
+// Configuração do ambiente
 
 app.use(express.json());
 
@@ -81,10 +81,9 @@ app.post('/api/gerar-rascunho', async (req, res) => {
     if (!topicos || topicos.length === 0) {
         return res.status(400).json({ error: 'Tópicos de entrada são obrigatórios.' });
     }
-
     try {
         console.log("Gateway: Chamando Agente 1 (Gerador)...");
-        // MODIFICAÇÃO: Recebe o objeto inteiro (rascunho + mcp)
+        // Recebe o objeto inteiro (rascunho + mcp)
         const data_agente_1 = await chamarAgenteGerador(topicos);
         const rascunhoInicial = data_agente_1.rascunho;
         const mcp_agente_1 = data_agente_1.mcp;
@@ -93,16 +92,16 @@ app.post('/api/gerar-rascunho', async (req, res) => {
         const padroes = await getPadroes(PADROES_FILE_PATH);
         
         console.log("Gateway: Chamando Agente 2 (Revisor) com o rascunho e padrões...");
-        // MODIFICAÇÃO: Passa o rascunho, padrões E o mcp_agente_1
+        // Passa o rascunho, padrões E o mcp_agente_1
         const data_agente_2 = await chamarAgenteRevisor(rascunhoInicial, padroes, mcp_agente_1);
         const rascunhoFinal = data_agente_2.rascunho_revisado;
         const mcp_agente_2 = data_agente_2.mcp;
         
-        // MODIFICAÇÃO: Agrega os contextos MCP para a resposta final
+        // Agrega os contextos MCP para a resposta final
         res.json({
             status: 'sucesso',
             rascunho_final_revisado: rascunhoFinal,
-            mcp_trace: { // O "rastreio" final para o frontend
+            mcp_trace: {
                 agente_gerador: mcp_agente_1,
                 agente_revisor: mcp_agente_2
             }
@@ -119,7 +118,6 @@ app.post('/api/gerar-rascunho', async (req, res) => {
 });
 
 // Ligar o servidor
-
 app.listen(PORT, () => {
     console.log(`API Gateway rodando na porta ${PORT}`);
 });
