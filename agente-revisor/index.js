@@ -49,8 +49,11 @@ app.post('/revisar', async (req, res) => {
         
         const prompt = `
           Você é um editor sênior de uma Empresa Júnior.
-          Sua tarefa é revisar o "RASCUNHO" a seguir para que ele siga Estritamente os "PADRÕES DA EMPRESA".
-          Não adicione nenhuma opinião, apenas retorne o texto revisado.
+          Sua tarefa é revisar o "RASCUNHO" a seguir para que ele siga os "PADRÕES DA EMPRESA".
+          Seu objetivo é aplicar as regras de terminologia e tom de voz de forma natural, sem exageros.
+          Corrija o rascunho para que soe profissional e humano.
+          Não adicione nenhuma informação nova que não esteja no rascunho original. Apenas retorne o texto revisado.
+
 
           --- PADRÕES DA EMPRESA ---
           ${padroesComoTexto}
@@ -94,6 +97,7 @@ app.post('/revisar', async (req, res) => {
         });
     }
 });
+
 //Ligar o servidor
 app.listen(PORT, () => {
     console.log(`Agente Revisor rodando na porta ${PORT}`);

@@ -1,9 +1,25 @@
 {
-  "tom_de_voz": "Sempre formal, mas cordial. Evite gírias e diminutivos.",
-  "terminologias_empresa": [
-    "Usar 'solução customizada' em vez de 'produto'.",
-    "Usar 'parceria' em vez de 'venda'.",
-    "Sempre iniciar e-mails com 'Prezado(a) [Nome do Cliente]'"
-  ],
-  "estrutura_proposta": "Propostas devem incluir uma seção de 'Escopo', 'Cronograma Estimado' e 'Investimento'."
+  "diretrizes_gerais": {
+    "tom_de_voz": "Formal, profissional e cordial. Evitar gírias, jargões técnicos desnecessários e diminutivos.",
+    "publico_alvo": "Clientes empresariais e parceiros estratégicos.",
+    "saudacao_obrigatoria": "Sempre iniciar e-mails com 'Prezado(a) [Nome do Cliente]'."
+  },
+  "substituicoes_terminologia": {
+    "produto": "solução customizada",
+    "venda": "parceria",
+    "preço": "investimento",
+    "reunião": "alinhamento estratégico"
+  },
+  "regras_de_estrutura": {
+    "proposta_comercial": {
+      "secoes_obrigatorias": [
+        "Escopo da Solução",
+        "Cronograma Estimado",
+        "Detalhes do Investimento"
+      ]
+    },
+    "email_de_agradecimento": {
+      "estrutura": "Agradecimento, resumo dos pontos-chave, próximos passos."
+    }
+  }
 }
