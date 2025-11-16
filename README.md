@@ -108,7 +108,7 @@ A análise de segurança identificou **20 ameaças** ao sistema, categorizadas p
 
 ### Documentação Completa
 
-📄 **[Acesse a Modelagem de Ameaças Completa](./docs/MODELAGEM_DE_AMEACAS.md)**
+📄 **[Acesse a Modelagem de Ameaças Completa](./docs/modelagem_de_ameacas.md)**
 
 A documentação completa inclui:
 - Tabela detalhada das 20 ameaças identificadas
@@ -117,6 +117,40 @@ A documentação completa inclui:
 - Medidas de mitigação para cada ameaça
 - Análise de risco residual
 - Arquivo CSV para processamento: [`modelagem_de_ameacas.csv`](./docs/modelagem_de_ameacas.csv)
+
+---
+
+## 🏗️ Arquitetura Final (Pós-Mitigação)
+
+Após a análise de segurança e modelagem de ameaças, a arquitetura foi aprimorada com múltiplas camadas de proteção para mitigar as 20 ameaças identificadas.
+
+### Diagrama da Arquitetura Final
+
+![Arquitetura Final com Medidas de Segurança](./docs/assets/dfd-arquitetura-final.png)
+
+**Principais Melhorias de Segurança Implementadas:**
+- 🔐 **Autenticação JWT/OAuth** no API Gateway (mitigação #1, #12)
+- 🔒 **Comunicação HTTPS/TLS** entre todos os serviços (mitigação #3)
+- ⏱️ **Rate limiting e timeouts** para proteção contra DoS (mitigações #4, #9, #15)
+- ✓ **Validação de entrada e sanitização** de dados (mitigações #5, #8)
+- ❤️ **Health checks** em todos os containers (mitigação #16)
+- 🛡️ **Isolamento via Docker Internal Network** (mitigação #17)
+- 🔑 **Proteção de secrets** com variáveis de ambiente (mitigação #2)
+- 📝 **Log sanitization** e logging centralizado (mitigações #7, #13)
+
+### Impacto das Mitigações
+
+- **Redução de risco:** ~69% (de ~45 para ~14)
+- **Ameaças críticas neutralizadas:** 3 (IDs: 1, 2, 4)
+- **Todas as 20 ameaças** possuem medidas de mitigação implementadas
+
+📄 **[Acesse a Documentação Completa da Arquitetura Final](./docs/arquitetura_final.md)**
+
+A documentação completa inclui:
+- Diagrama de fluxo de dados detalhado com medidas de segurança
+- Mapeamento completo de cada medida de mitigação por componente
+- Comparação de risco antes vs. depois para cada ameaça
+- Justificativas técnicas e referências metodológicas
 
 ---
 
