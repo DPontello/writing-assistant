@@ -8,7 +8,6 @@ import os
 
 app = FastAPI()
 
-
 #Definir formato de dados esperados da entrada
 class TopicosInput(BaseModel):
     topicos: list[str]
@@ -57,7 +56,19 @@ async def generate_rascunho(entrada: TopicosInput):
         rascunho_gerado = response['message']['content']
         print("Agente 1: Ollama respondeu com sucesso.")
         
-        return {"rascunho": rascunho_gerado}
+        # --- INÍCIO DA MODIFICAÇÃO MCP ---
+        
+        # 1. Criar o objeto de contexto MCP
+        mcp_context = {
+            "task": "Geração de Rascunho Inicial",
+            "model": "phi3",
+            "prompt": prompt,
+            "output": rascunho_gerado
+        }
+        
+        # 2. Retornar o rascunho E o contexto
+        return {"rascunho": rascunho_gerado, "mcp": mcp_context}
+        # --- FIM DA MODIFICAÇÃO MCP ---
 
     except Exception as e:
         print(f"ERRO no Agente 1 ao chamar Ollama: {str(e)}")
@@ -65,4 +76,3 @@ async def generate_rascunho(entrada: TopicosInput):
             status_code=503,
             detail=f"Falha ao contatar o serviço de IA local (Ollama): {str(e)}"
         )
-         
