@@ -35,7 +35,7 @@ async function getPadroes(filename) {
 async function chamarAgenteGerador(topicos) {
     try {
         const response = await axios.post(`${AGENTE_GERADOR_URL}/generate`, { topicos });
-        return response.data.rascunho; 
+        return response.data; 
     } catch (error) {
         console.error('ERRO: Falha ao contatar Agente 1 (Gerador)', error.message);
         throw new Error('Serviço de Geração de Rascunho está indisponível.');
@@ -43,13 +43,14 @@ async function chamarAgenteGerador(topicos) {
 }
 
 // Função para chamar o Agente 2 (Revisor)
-async function chamarAgenteRevisor(rascunho, padroes) {
+async function chamarAgenteRevisor(rascunho, padroes, mcp_agente_1) {
     try {
         const response = await axios.post(`${AGENTE_REVISOR_URL}/revisar`, { 
             rascunho: rascunho,
-            padroes: padroes 
+            padroes: padroes,
+            mcp_agente_1: mcp_agente_1 
         });
-        return response.data.rascunho_revisado;
+        return response.data;
     } catch (error) {
         console.error('ERRO: Falha ao contatar Agente 2 (Revisor)', error.message);
         throw new Error('Serviço de Revisão de Rascunho está indisponível.');
@@ -74,7 +75,6 @@ app.get('/api/padroes', async (req, res) => {
 });
 
 // Rota Principal
-
 app.post('/api/gerar-rascunho', async (req, res) => {
     const { topicos } = req.body;
 
@@ -84,17 +84,28 @@ app.post('/api/gerar-rascunho', async (req, res) => {
 
     try {
         console.log("Gateway: Chamando Agente 1 (Gerador)...");
-        const rascunhoInicial = await chamarAgenteGerador(topicos);
+        // MODIFICAÇÃO: Recebe o objeto inteiro (rascunho + mcp)
+        const data_agente_1 = await chamarAgenteGerador(topicos);
+        const rascunhoInicial = data_agente_1.rascunho;
+        const mcp_agente_1 = data_agente_1.mcp;
 
         console.log("Gateway: Buscando padrões locais (D1)...");
         const padroes = await getPadroes(PADROES_FILE_PATH);
         
         console.log("Gateway: Chamando Agente 2 (Revisor) com o rascunho e padrões...");
-        const rascunhoFinal = await chamarAgenteRevisor(rascunhoInicial, padroes);
+        // MODIFICAÇÃO: Passa o rascunho, padrões E o mcp_agente_1
+        const data_agente_2 = await chamarAgenteRevisor(rascunhoInicial, padroes, mcp_agente_1);
+        const rascunhoFinal = data_agente_2.rascunho_revisado;
+        const mcp_agente_2 = data_agente_2.mcp;
         
+        // MODIFICAÇÃO: Agrega os contextos MCP para a resposta final
         res.json({
             status: 'sucesso',
-            rascunho_final_revisado: rascunhoFinal
+            rascunho_final_revisado: rascunhoFinal,
+            mcp_trace: { // O "rastreio" final para o frontend
+                agente_gerador: mcp_agente_1,
+                agente_revisor: mcp_agente_2
+            }
         });
 
     } catch (error) {
@@ -112,8 +123,3 @@ app.post('/api/gerar-rascunho', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`API Gateway rodando na porta ${PORT}`);
 });
-
-
-
-
-
