@@ -5,12 +5,27 @@ const fs = require('fs/promises');
 const path = require('path');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
 
 const PORT = 3000;
 const app = express();
 
+// RATE LIMITING: 100 requisições por minuto por IP
+const limiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 100,
+    message: { error: "Limite de requisições excedido. Tente novamente em 1 minuto." },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 app.use(express.json());
 app.use(cors());
+
+app.use(limiter);
+
+// TIMEOUT GLOBAL PARA TODAS AS REQUISIÇÕES AXIOS
+axios.defaults.timeout = 10000; // 10 segundos
 
 // Variáveis de ambiente e Config Básica
 const AGENTE_GERADOR_URL = process.env.AGENTE_GERADOR_URL || 'http://localhost:8001';
