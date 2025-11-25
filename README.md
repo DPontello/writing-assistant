@@ -171,7 +171,7 @@ A documentação completa inclui:
 
 **Pré-requisitos:**
 - Docker e Docker Compose instalados.
-- Arquivo `.env` na raiz do projeto com a chave `GEMINI_API_KEY`.
+- Arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias.
 
 **Passos:**
 1. Clone o repositório:
@@ -182,16 +182,24 @@ A documentação completa inclui:
    ```bash
    cd writing-assistant
    ```
-3. Crie o arquivo `.env` e adicione sua chave da API do Gemini:
-   ```
+3. Crie o arquivo `.env` na raiz do projeto com o seguinte formato:
+   ```env
    GEMINI_API_KEY=SUA_CHAVE_AQUI
+   LOGIN_USER=SEU_USUARIO
+   LOGIN_PASS=SUA_SENHA
+   JWT_SECRET=SUA_CHAVE_SECRETA
+   JWT_EXPIRES=1h (RECOMENDADO)
    ```
 4. Suba os containers:
    ```bash
    docker-compose up --build
    ```
-5. A API estará disponível em `http://localhost:3000`.
+5. Aguarde o download do modelo de IA (~2 minutos na primeira execução).
 
+6. Acesse o sistema:
+   - **Interface Web:** `http://localhost:3000`
+   - **Página de Login:** `http://localhost:3000/login.html`
+  
 ---
 
 ## 📚 Referências
