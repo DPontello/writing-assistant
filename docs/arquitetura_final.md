@@ -1,6 +1,6 @@
 # 🏗️ Arquitetura Final — Pós-Mitigação de Ameaças
 
-Este documento apresenta a **Visão Final da Arquitetura** do sistema após a implementação das medidas de mitigação identificadas na [Modelagem de Ameaças STRIDE](./MODELAGEM_DE_AMEACAS.md).
+Este documento apresenta a **Visão Final da Arquitetura** do sistema após a análise e proposta de medidas de mitigação identificadas na [Modelagem de Ameaças STRIDE](./modelagem_de_ameacas.md).
 
 ---
 
@@ -12,7 +12,7 @@ O diagrama acima ilustra a arquitetura do sistema com todas as **medidas de segu
 
 ---
 
-## 🛡️ Medidas de Segurança Implementadas
+## 🛡️ Medidas de Segurança Propostas
 
 ### **1. Autenticação e Autorização**
 
@@ -152,6 +152,24 @@ O diagrama acima ilustra a arquitetura do sistema com todas as **medidas de segu
 
 ---
 
+## ✅ Status de Implementação
+
+Das 20 medidas de segurança propostas, **5 foram efetivamente implementadas** no sistema atual, com foco nas ameaças de maior criticidade (risco > 60):
+
+### Medidas Implementadas
+
+| ID | Ameaça | Risco | Medida Implementada | Status |
+|----|--------|-------|---------------------|--------|
+| **#1** | API Gateway sem autenticação | 72 | Autenticação JWT completa | ✅ Implementado |
+| **#2** | Chave API Gemini exposta | 70 | Variáveis de ambiente (.env) + .gitignore | ✅ Implementado |
+| **#4** | DoS no API Gateway | 63 | Rate limiting | ✅ Implementado |
+| **#10** | Acesso não autorizado aos padrões | 30 | Proteção de rota /api/padroes | ✅ Implementado |
+| **#13** | Falta de monitoramento | 36 | Logging básico | ✅ Implementado |
+
+**Impacto:** As 3 ameaças críticas (risco > 60) foram completamente mitigadas, reduzindo significativamente a superfície de ataque do sistema.
+
+---
+
 ## 📚 Referências
 
 ### Metodologia de Segurança
@@ -169,7 +187,7 @@ O diagrama acima ilustra a arquitetura do sistema com todas as **medidas de segu
 
 ## 🔗 Documentação Relacionada
 
-- [📊 Modelagem de Ameaças Completa](./MODELAGEM_DE_AMEACAS.md)
+- [📊 Modelagem de Ameaças Completa](./modelagem_de_ameacas.md)
 - [📁 Tabela CSV de Ameaças](./modelagem_de_ameacas.csv)
 - [🏗️ Diagrama Arquitetura Inicial](./diagrama_arquitetura.png)
 - [📖 README Principal](../README.md)
