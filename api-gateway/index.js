@@ -5,7 +5,8 @@ const fs = require('fs/promises');
 const path = require('path');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const PORT = 3000;
 const app = express();
@@ -22,10 +23,10 @@ const LOGIN_PASS = process.env.LOGIN_PASS;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES = process.env.JWT_EXPIRES || '1h';
 
-// 🔥 NOVO — Middleware para proteger rotas
+//Middleware para proteger rotas
 function autenticarToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer token
+    const token = authHeader && authHeader.split(' ')[1]; 
 
     if (!token)
         return res.status(401).json({ error: 'Token não fornecido.' });
@@ -39,7 +40,6 @@ function autenticarToken(req, res, next) {
     });
 }
 
-// Funções auxiliares
 async function getPadroes(filename) {
     try {
         const data = await fs.readFile(filename, 'utf-8');
@@ -73,8 +73,7 @@ async function chamarAgenteRevisor(rascunho, padroes) {
     }
 }
 
-// login
-// ---------------------------
+//Rotas
 app.post('/api/login', (req, res) => {
     const { usuario, senha } = req.body;
 
@@ -144,7 +143,6 @@ app.post('/api/gerar-rascunho', autenticarToken, async (req, res) => {
     }
 });
 
-// Start
 app.listen(PORT, () => {
     console.log(`API Gateway rodando na porta ${PORT}`);
 });

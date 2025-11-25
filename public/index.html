@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente de Redação Institucional</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>📋</h1>
+        <div class="subtitle">Assistente de Redação Institucional</div>
+        <div class="institution">Alfa Pública JR - UFLA</div>
+    </header>
+
+    <main>
+        <div class="container-main">
+            
+            <div class="info-box">
+                <strong>✓ Como funciona:</strong> Insira os tópicos que deseja abordar, e nossa IA gerará um rascunho profissional seguindo as normas de redação oficial brasileira e os padrões da empresa.
+            </div>
+
+            <div class="section">
+                <div class="section-title">📝 Tópicos da Redação</div>
+                <label for="topicos-input">Digite um tópico por linha:</label>
+                <textarea id="topicos-input" placeholder="Exemplo: Apresentar proposta de projeto&#10;Exemplo: Solicitar aprovação do orçamento&#10;Exemplo: Informar sobre a reunião de alinhamento"></textarea>
+                <div class="helper-text">💡 Mínimo de 1 tópico | Máximo recomendado: 10 tópicos</div>
+            </div>
+
+            <button id="gerar-btn">🤖 Gerar Rascunho</button>
+
+            <div class="resultado-section">
+                <div class="section-title">📄 Resultado</div>
+                <div id="status-msg">Aguardando geração...</div>
+                <pre id="resultado-texto"></pre>
+                <button id="copiar-btn" class="copy-btn" style="display: none;">📋 Copiar Texto</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>2025 Alfa Pública JR - UFLA | v1.0</p>
+    </footer>
+
+   <script src="script.js"></script>
+
+</body>
+</html>
