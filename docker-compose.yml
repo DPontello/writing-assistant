@@ -42,6 +42,8 @@ services:
       context: .
       dockerfile: ./api-gateway/Dockerfile
     container_name: api_gateway_service
+    env_file:
+      - ./.env
     depends_on:
       - agente-gerador
       - agente-revisor
