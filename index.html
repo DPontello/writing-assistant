@@ -48,7 +48,7 @@
             border-radius: 6px;
             font-size: 1rem;
             font-family: inherit;
-            box-sizing: border-box; 
+            box-sizing: border-box;
             resize: vertical;
         }
 
@@ -120,7 +120,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            
+
             const gerarBtn = document.getElementById("gerar-btn");
             const topicosInput = document.getElementById("topicos-input");
             const resultadoTexto = document.getElementById("resultado-texto");
@@ -129,7 +129,7 @@
             const apiUrl = "http://localhost:3000/api/gerar-rascunho";
 
             gerarBtn.addEventListener("click", async () => {
-                
+
                 const topicosTexto = topicosInput.value;
 
                 if (!topicosTexto.trim()) {
@@ -153,11 +153,14 @@
                 resultadoTexto.textContent = "";
 
                 try {
-                    // 3. Tenta chamar API 
+                    // 3. Tenta chamar API
+                    const token = localStorage.getItem("jwt_token");
+
                     const response = await fetch(apiUrl, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
                         },
                         body: JSON.stringify({ topicos: topicosArray })
                     });

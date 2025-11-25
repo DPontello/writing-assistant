@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SCRIPTUM</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        main {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1c1e21;
+            margin-top: 0;
+        }
+
+        label {
+            font-weight: 600;
+            color: #4b4f56;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: inherit;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0069d9;
+        }
+
+        #status-msg {
+            text-align: center;
+            font-style: italic;
+            margin-top: 15px;
+            color: #606770;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <h1>🔐 Login</h1>
+        <p style="text-align:center;color:#555;margin-top:-10px;">Acesse o SCRIPTUM</p>
+
+        <label for="login-input">Usuário</label>
+        <input type="text" id="login-input" placeholder="Digite seu usuário">
+
+        <label for="senha-input">Senha</label>
+        <input type="password" id="senha-input" placeholder="Digite sua senha">
+
+        <button id="login-btn">Entrar</button>
+
+        <div id="status-msg"></div>
+    </main>
+
+    <script>
+        const loginBtn = document.getElementById("login-btn");
+        const loginInput = document.getElementById("login-input");
+        const senhaInput = document.getElementById("senha-input");
+        const statusMsg = document.getElementById("status-msg");
+
+        loginBtn.addEventListener("click", async () => {
+            const usuario = loginInput.value.trim();
+            const senha = senhaInput.value.trim();
+
+            if (!usuario || !senha) {
+                statusMsg.textContent = "Preencha todos os campos.";
+                statusMsg.style.color = "red";
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Entrando...";
+            statusMsg.textContent = "Validando login...";
+
+            try {
+                const response = await fetch("http://localhost:3000/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ usuario, senha })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Falha ao fazer login.");
+                }
+
+                // Salva token no localStorage
+                localStorage.setItem("jwt_token", data.token);
+
+                statusMsg.textContent = "Login realizado! Redirecionando...";
+                statusMsg.style.color = "green";
+
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 800);
+
+            } catch (error) {
+                statusMsg.textContent = "Usuário ou senha inválidos.";
+                statusMsg.style.color = "red";
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = "Entrar";
+            }
+        });
+    </script>
+
+</body>
+</html>
