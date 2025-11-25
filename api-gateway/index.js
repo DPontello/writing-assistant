@@ -6,7 +6,7 @@ const path = require('path');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 const PORT = 3000;
 const app = express();
