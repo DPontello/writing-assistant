@@ -1,0 +1,90 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+main {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+h1 {
+    text-align: center;
+    color: #1c1e21;
+    margin-top: 0;
+}
+
+label {
+    font-weight: 600;
+    color: #4b4f56;
+    display: block;
+    margin-bottom: 8px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #0069d9;
+}
+
+button:disabled {
+    background-color: #a0cfff;
+    cursor: not-allowed;
+}
+
+#resultado-container {
+    margin-top: 24px;
+}
+
+#resultado-texto {
+    background-color: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 16px;
+    min-height: 150px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: "Courier New", Courier, monospace;
+    color: #333;
+}
+
+#status-msg {
+    text-align: center;
+    font-style: italic;
+    color: #606770;
+}
