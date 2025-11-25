@@ -6,12 +6,25 @@ const path = require('path');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const rateLimit = require('express-rate-limit');
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+
+// LIMITADOR DE REQUISIÇÕES (DoS Mitigation)
+const limiter = rateLimit({
+    windowMs: 60 * 1000,          // 1 minuto
+    max: 100,                     // 100 req/min por IP
+    message: { error: "Muitas requisições. Tente novamente mais tarde." },
+    standardHeaders: true,        // envia rate limit nos headers
+    legacyHeaders: false,
+});
 
 const PORT = 3000;
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(limiter);
+
+axios.defaults.timeout = 60000
 
 // Variáveis de ambiente
 const AGENTE_GERADOR_URL = process.env.AGENTE_GERADOR_URL || 'http://localhost:8001';
@@ -26,7 +39,7 @@ const JWT_EXPIRES = process.env.JWT_EXPIRES || '1h';
 //Middleware para proteger rotas
 function autenticarToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; 
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token)
         return res.status(401).json({ error: 'Token não fornecido.' });
